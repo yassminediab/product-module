@@ -15,13 +15,23 @@ This product module is to manage your products(add , edit , list , delete and sh
 - Send notification email after creating the product
 
 ## Installation
+Make sure that all ports is available
 ```bash
 $ git clone git@github.com:yassminediab/product-module.git
 $ cp .env.example .env
 $ docker-compose up --build
+--------------------
 $ docker exec product_module COMPOSER_MEMORY_LIMIT=-1 composer install
 $ docker exec product_module php artisan migrate --seed
 $ docker exec product_module php artisan queue:work --queue=high,default
+
+Or 
+
+$ docker exec -it product_module bash 
+$ COMPOSER_MEMORY_LIMIT=-1 composer install 
+$ php artisan migrate --seed
+$ php artisan queue:work --queue=high,default
+
 ```
 
 ## Running the app
