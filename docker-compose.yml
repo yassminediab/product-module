@@ -1,0 +1,60 @@
+version: '3.5'
+
+services:
+  product:
+    build:
+      context: '.'
+      args:
+        uid: ${UID}
+    container_name: product_module
+    environment:
+      - APACHE_RUN_USER=#${UID}
+      - APACHE_RUN_GROUP=#${UID}
+    volumes:
+      - type: bind
+        source: .
+        target: /var/www/html
+    ports:
+      - 8000:80
+    networks:
+      backend:
+        aliases:
+          - product
+
+  product-mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'product_module'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql
+    networks:
+     backend:
+       aliases:
+         - product
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - product-mysql
+    environment:
+      PMA_HOST: product-mysql
+      PMA_PORT: 3306
+    ports:
+      - '8080:80'
+    networks:
+      backend:
+        aliases:
+          - phpmyadmin
+
+networks:
+  backend:
+    name: product
+volumes:
+  my-db:
