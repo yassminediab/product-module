@@ -18,6 +18,7 @@ This product module is to manage your products(add , edit , list , delete and sh
 ```bash
 $ git clone git@github.com:yassminediab/product-module.git
 $ docker compose up --build
+$ cp .env.example .env
 $ docker exec product_module COMPOSER_MEMORY_LIMIT=-1 composer install
 $ docker exec product_module php artisan migrate --seed
 $ docker exec product_module php artisan queue:work --queue=high,default
